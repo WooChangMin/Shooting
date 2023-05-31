@@ -58,6 +58,6 @@ public class PlayerMove : MonoBehaviour
     private bool GroundChecker()
     {
         RaycastHit hit;
-        return Physics.SphereCast(transform.position + Vector3.up * 1, 0.5f , Vector3.down, out hit, 0.7f);
+        return Physics.SphereCast(transform.position + Vector3.up * 1, 0.5f , Vector3.down, out hit, 0.6f);
     }
 }

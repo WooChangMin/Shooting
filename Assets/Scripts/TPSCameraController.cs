@@ -10,6 +10,7 @@ public class TPSCameraController : MonoBehaviour
 
     //카메라가 바라보고 잇는 방향으로 플레이어도 바라보게 만듬
     [SerializeField] float lookDistance;
+    [SerializeField] Transform aimTarget;
 
 
     private Vector2 lookDelta;
@@ -30,6 +31,7 @@ public class TPSCameraController : MonoBehaviour
     private void Rotate()
     {
         Vector3 lookPoint = Camera.main.transform.position + Camera.main.transform.forward * lookDistance;
+        aimTarget.position = lookPoint;
         lookPoint.y = transform.position.y;
         transform.LookAt(lookPoint);
     }

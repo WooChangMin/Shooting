@@ -1,28 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class PlayerMover : MonoBehaviour
 {
     //움직임을 위한 속도
-    [SerializeField] float moveSpeed;
-    [SerializeField] private float jumpSpeed;
+    [SerializeField] float runSpeed;
+    [SerializeField] float walkSpeed;
+    [SerializeField] float jumpSpeed;
 
     // CharacterController 컴포넌트를 쓰기위함
     private CharacterController controller;
     
     //input값을 받기위한 방향
     private Vector3 moveDir;
-
+    private float moveSpeed;
     //포물선 운동을 위한 y속도가 필요함
     private float ySpeed = 0;
-    
+
+    // 애니메이터 가져오기
+    private Animator anim;
+
+    private bool isWalking;
 
     private void Awake()
     {
         //rigidbody나 transform이 아닌 새로운 컴퍼넌트 받음 
         controller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();   
     }
 
     private void Update()
@@ -38,11 +46,28 @@ public class PlayerMover : MonoBehaviour
     {
         //속력을 만들고 싶을땐 속도수치 * 델타타임
         // controller.Move(moveDir * moveSpeed * Time.deltaTime);  => 월드기준 움직임
-
+        if (moveDir.magnitude <= 0)          //안움직임
+        {
+            moveSpeed = Mathf.Lerp(moveSpeed, 0, 0.5f);  // 러프를안쓰고 =0 으로 대입해주면 바로멈추고, Mathf의 Lerp를 써줄경우 점차멈춤.
+        }
+        else if (isWalking)
+        {
+            moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, 0.5f);
+        }
+        else
+        {
+            moveSpeed = Mathf.Lerp(moveSpeed, runSpeed, 0.5f);
+        }
         // 로컬기준 움직임
         controller.Move(transform.forward * moveDir.z * moveSpeed * Time.deltaTime);
         controller.Move(transform.right * moveDir.x * moveSpeed * Time.deltaTime);
 
+        // Mathf.Lerp 러프를 쓰는경우도 있다
+
+        anim.SetFloat("XSpeed", moveDir.x, 0.1f, Time.deltaTime);
+        anim.SetFloat("ZSpeed", moveDir.z, 0.1f, Time.deltaTime);
+        anim.SetFloat("Speed", moveSpeed);
+        //anim.SetFloat("ZSpeed", moveSpeed);
     }
 
     private void OnMove(InputValue value)
@@ -73,5 +98,10 @@ public class PlayerMover : MonoBehaviour
     {
         RaycastHit hit;
         return Physics.SphereCast(transform.position + Vector3.up * 1 , 0.5f, Vector3.down, out hit, 0.7f);
+    }
+
+    private void OnWalk(InputValue value)
+    {
+        isWalking = value.isPressed;
     }
 }
