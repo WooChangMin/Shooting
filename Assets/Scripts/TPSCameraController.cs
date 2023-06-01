@@ -8,9 +8,9 @@ public class TPSCameraController : MonoBehaviour
     [SerializeField] Transform cameraRoot;
     [SerializeField] float mouseSensitivity;
 
+    [SerializeField] Transform aimTarget;
     //카메라가 바라보고 잇는 방향으로 플레이어도 바라보게 만듬
     [SerializeField] float lookDistance;
-    [SerializeField] Transform aimTarget;
 
 
     private Vector2 lookDelta;
@@ -51,7 +51,7 @@ public class TPSCameraController : MonoBehaviour
 
         // 좌우는  회전한 방향만큼 플레이어도 회전
         // transform.localRotation = Quaternion.Euler(0, yRotation, 0);
-    }
+    }   
     private void OnEnable()
     {
         Cursor.lockState = CursorLockMode.Locked;
