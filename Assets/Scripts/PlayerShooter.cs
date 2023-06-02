@@ -17,6 +17,7 @@ public class PlayerShooter : MonoBehaviour
 
     private void Awake()
     {
+        Resources.Load<TrailRenderer>("Prefabs/BulletTrail");   
         anim = GetComponent<Animator>();
         // 직렬화 하지않고 weaponHolder를 직접받아와도 됨
     

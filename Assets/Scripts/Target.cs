@@ -15,7 +15,7 @@ public class Target : MonoBehaviour, IHitable
     {
         if(rb != null)
         {
-            rb.AddForceAtPosition(-10 * hit.normal, hit.point, ForceMode.Impulse);  //노멀벡터의 반대방향으로 힘줒ㅁ
+            rb.AddForceAtPosition(-10 * hit.normal, hit.point, ForceMode.Impulse);  //노멀벡터의 반대방향으로 힘줌
         }
 
     }
